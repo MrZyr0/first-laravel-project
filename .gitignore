@@ -1,4 +1,6 @@
+/vendor
 vendor/
+/node_modules
 node_modules/
 npm-debug.log
 
@@ -7,8 +9,11 @@ bootstrap/compiled.php
 app/storage/
 
 # Laravel 5 & Lumen specific
+/public/storage
 public/storage
+/public/hot
 public/hot
+/storage/*.key
 storage/*.key
 .env.*.php
 .env.php
