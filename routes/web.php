@@ -15,6 +15,24 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Auth::routes();
+Route::group(['prefix' => 'admin'], function () {
+    // Authentication Routes...
+        Route::get('login', 'Auth\LoginController@showLoginForm')->name('login');
+        Route::post('login', 'Auth\LoginController@login');
+        Route::post('logout', 'Auth\LoginController@logout')->name('logout');
 
-Route::get('/home', 'HomeController@index')->name('home');
+    // Registration Routes...
+        Route::get('signup', 'Auth\RegisterController@showRegistrationForm')->name('register');
+        Route::post('signup', 'Auth\RegisterController@register');
+
+    // Password Reset Routes...
+        Route::resetPassword();
+
+    // Password Confirmation Routes...
+        Route::confirmPassword();
+
+    // Email Verification Routes...
+        Route::emailVerification();
+});
+
+Route::get('/home', 'HomeController@index')->name('home')->middleware('verified');
