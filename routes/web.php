@@ -20,6 +20,20 @@ Route::group(['prefix' => 'admin'], function () {
         Route::get('login', 'Auth\LoginController@showLoginForm')->name('login');
         Route::post('login', 'Auth\LoginController@login');
         Route::post('logout', 'Auth\LoginController@logout')->name('logout');
+        Route::get('login/github',function () {
+            return Socialite::with('github')->redirect();
+        })->name('githubLogin');
+        Route::get('login/github/callback', function () {
+            $user = Socialite::driver('github')->user();
+            $createdUser = \App\User::create([
+                'name' => $user->name,
+                'email' => $user->email,
+                'password' => '',
+                'email_verified_at' => date("Y-m-d H:i:s"),
+            ]);
+            auth()->login($createdUser, true);
+            return redirect()->route('home');
+        })->name('githubLoginCallback');
 
     // Registration Routes...
         Route::get('signup', 'Auth\RegisterController@showRegistrationForm')->name('register');
